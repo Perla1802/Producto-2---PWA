@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aulas</title>
+    <title>Especialidades</title>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -45,12 +45,12 @@
             <div class="menu">
                 <nav>
                     <ul>
-                        <li><a href="/src/vistas/divisionesdatatable.html">Divisiones</a></li>
-                        <li><a href="/src/vistas/especialidades.html">Especialidades</a></li>
-                        <li><a href="/src/vistas/edificios.html">Edificios</a></li>
-                        <li><a href="/src/vistas/aulas.html">Aulas</a></li>
-                        <li><a href="/src/vistas/periodos.html">Periodos</a></li>
-                        <li><a href="/src/vistas/grupos.html">Grupos</a></li>
+                        <li><a href="/src/vistas/Registros/division/divisionesdatatable.html">Divisiones</a></li>
+                        <li><a href="/src/vistas/Registros/especialidad/especialidades.html">Especialidades</a></li>
+                        <li><a href="/src/vistas/Registros/edificio/edificios.html">Edificios</a></li>
+                        <li><a href="/src/vistas/Registros/aula/aulas.html">Aulas</a></li>
+                        <li><a href="/src/vistas/Registros/periodo/periodos.html">Periodos</a></li>
+                        <li><a href="/src/vistas/Registros/grupo/grupos.html">Grupos</a></li>
                     </ul>
                 </nav>
 
@@ -66,24 +66,23 @@
             <!-- Contenido principal -->
             <main role="main" class="col-md-9 ml-sm-auto col-lg-12" style="margin-top: 20px;">
                 <div class="mb-3 border-bottom">
-                    <h1 id="title" style="font-size: 40px;">Aulas</h1>
+                    <h1 id="title" style="font-size: 40px;">Especialidades</h1>
                 </div>
 
-                <a href="/src/vistas/Registros/aula.html" class="btn"
+                <a href="/src/vistas/Registros/especialidad/especialidad.html" class="btn"
                     style="border-color: #134e4a; background-color:#134e4a; color: white; margin-bottom: 30px;">Agregar
                 </a>
-
 
                 <!-- Modal -->
                 <div class="modal fade" id="modal" role="edit" aria-labelledby="Editar" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Editar Registros</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Editar Registro</h5>
                             </div>
                             <div class="modal-body">
                                 <!-- Campos de entrada para folio y dirección -->
-                                <input type="text" id="ids" hidden>
+                                <input type="text" id="ids">
                                 <div class="mb-3">
                                     <label for="nombreInput" class="form-label">Nombre:</label>
                                     <input type="text" id="nombreInput" placeholder="Nombre" class="form-control">
@@ -96,8 +95,8 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="idEdificio" class="form-label">Id Edificio:</label>
-                                    <input type="text" id="idEdificio" placeholder="idEdificio"
+                                    <label for="idDivision" class="form-label">IDdivision:</label>
+                                    <input type="text" id="idDivision" placeholder="idDivision"
                                         class="form-control">
                                 </div>
 
@@ -121,9 +120,9 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Edificio ID</th>
-                                <th>Nombre Edificio</th>
+                                <th>Descripción </th>
+                                <th>Division ID</th>
+                                <th>Nombre division</th>
                                 <th class="align-items-center justify-content-center">Acciones</th>
                             </tr>
                         </thead>
@@ -164,25 +163,25 @@
                     }
                 },
                 ajax: {
-                    url: 'http://localhost:3000/aulas/get',
+                    url: 'http://localhost:3000/especialidades/get',
                     dataSrc: 'content'
                 },
                 columns: [
-                    { data: 'IDaula' },
-                    { data: 'NombreAula' },
-                    { data: 'DescripcionAula' },
-                    { data: 'EdificioID' },
-                    { data: 'NombreEdificio' },
+                    { data: 'IDespecialidad' },
+                    { data: 'NombresEspecialidad' },
+                    { data: 'DescripcionEsp' },
+                    { data: 'DivisionID' },
+                    { data: 'NombreDivision' },
                     {
                         data: null,
                         render: function (data, type, row) {
-                            const IDaula = row.IDaula;
-                            const NombreAula = row.NombreAula;
-                            const DescripcionAula = row.DescripcionAula;
-                            const EdificioID = row.EdificioID;
+                            const IDespecialidad = row.IDespecialidad;
+                            const NombreEspecialidad = row.NombresEspecialidad;
+                            const DescripcionEsp = row.DescripcionEsp;
+                            const DivisionID = row.DivisionID;
                             // Botones de Acciones
-                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDaula},'${NombreAula}','${DescripcionAula}',${EdificioID})">Editar</button> 
-                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDaula})">Eliminar</button>`;
+                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDespecialidad},'${NombreEspecialidad}','${DescripcionEsp}',${DivisionID})">Editar</button> 
+                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDespecialidad})">Eliminar</button>`;
                         }
                     }
                 ]
@@ -196,30 +195,31 @@
 
         function cerrarModal() {
             $("#modal").modal('hide')
-            window.location.href = '/src/vistas/aulas.html'
+            window.location.href = './especialidades.html'
         }
 
         //No se ha modificado esta parte
-        function editarRegistro(IDaula, NombreAula, DescripcionAula, EdificioID) {
+        function editarRegistro(IDespecialidad, NombreEspecialidad, DescripcionEsp, IDdivision) {
+
             //pasando los valores al modal
-            $('#nombreInput').val(NombreAula);
-            $('#descripcionInput').val(DescripcionAula);
-            $('#ids').val(IDaula);
-            $('#idEdificio').val(EdificioID);
+            $('#nombreInput').val(NombreEspecialidad);
+            $('#descripcionInput').val(DescripcionEsp);
+            $('#ids').val(IDespecialidad);
+            $('#idDivision').val(IDdivision);
 
             $('#modal').modal('toggle');
         }
 
-        function guardarCambios(IDaula) {
+        function guardarCambios(IDespecialidad) {
             //valores nuevos
             const nom = $('#nombreInput').val();
             const des = $('#descripcionInput').val();
-            const idE = $('#idEdificio').val();
+            const idDivision = $('#idDivision').val();
 
             $.ajax({
                 method: "PUT",
-                url: `http://localhost:3000/aulas/update/${IDaula}`,
-                data: { nombre: nom, descripcion: des, idEdificio: idE}, //mandas los valores nuevos
+                url: `http://localhost:3000/especialidades/update/${IDespecialidad}`,
+                data: { nombre: nom, descripcion: des, idDivision: idDivision}, //mandas los valores nuevos
                 success: function (response) {
                     console.log("Registro actualizado con éxito", response);
                 },
@@ -230,18 +230,19 @@
             cerrarModal();
         }
 
-        function eliminarRegistro(IDaula) {
+        function eliminarRegistro(IDespecialidad) {
             $.ajax({
                 method: "DELETE",
-                url: `http://localhost:3000/aulas/delete/${IDaula}`,
+                url: `http://localhost:3000/especialidades/delete/${IDespecialidad}`,
                 success: function (response) {
-                    console.log("Registro eliminado", response);
-                    window.location.href = '/src/vistas/aulas.html'    
+                    console.log("Registro eliminado", response); 
+                    window.location.href = './especialidades.html' 
                 },
                 error: function (error) {
                     console.error("Error al actualizar el registro", error);
                 }
             });
+            window.location.href = './especialidades.html'
         }
     </script>
 

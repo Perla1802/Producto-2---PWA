@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grupos</title>
+    <title>Divisiones</title>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -26,14 +26,11 @@
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
-
-
 </head>
 
 <body>
 
     <!--Header - Menu-->
-
     <header>
         <div class="container__header">
             <div class="logo">
@@ -45,15 +42,14 @@
             <div class="menu">
                 <nav>
                     <ul>
-                        <li><a href="/src/vistas/divisionesdatatable.html">Divisiones</a></li>
-                        <li><a href="/src/vistas/especialidades.html">Especialidades</a></li>
-                        <li><a href="/src/vistas/edificios.html">Edificios</a></li>
-                        <li><a href="/src/vistas/aulas.html">Aulas</a></li>
-                        <li><a href="/src/vistas/periodos.html">Periodos</a></li>
-                        <li><a href="/src/vistas/grupos.html">Grupos</a></li>
+                        <li><a href="/src/vistas/Registros/division/divisionesdatatable.html">Divisiones</a></li>
+                        <li><a href="/src/vistas/Registros/especialidad/especialidades.html">Especialidades</a></li>
+                        <li><a href="/src/vistas/Registros/edificio/edificios.html">Edificios</a></li>
+                        <li><a href="/src/vistas/Registros/aula/aulas.html">Aulas</a></li>
+                        <li><a href="/src/vistas/Registros/periodo/periodos.html">Periodos</a></li>
+                        <li><a href="/src/vistas/Registros/grupo/grupos.html">Grupos</a></li>
                     </ul>
                 </nav>
-
                 <a href="/src/index.html" class="btn__quote">Salir</a>
             </div>
         </div>
@@ -61,15 +57,14 @@
 
     <!--INICIO-->
     <div class="container-fluid">
-
         <div class="row">
             <!-- Contenido principal -->
             <main role="main" class="col-md-9 ml-sm-auto col-lg-12" style="margin-top: 20px;">
                 <div class="mb-3 border-bottom">
-                    <h1 id="title" style="font-size: 40px;">Grupos</h1>
+                    <h1 id="title" style="font-size: 40px;">División</h1>
                 </div>
 
-                <a href="/src/vistas/Registros/grupo.html" class="btn"
+                <a href="/src/vistas/Registros/division/division.html" class="btn"
                     style="border-color: #134e4a; background-color:#134e4a; color: white; margin-bottom: 30px;">Agregar
                 </a>
 
@@ -79,7 +74,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Editar Grupo</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Editar Registros</h5>
                             </div>
                             <div class="modal-body">
                                 <!-- Campos de entrada para folio y dirección -->
@@ -88,31 +83,11 @@
                                     <label for="nombreInput" class="form-label">Nombre:</label>
                                     <input type="text" id="nombreInput" placeholder="Nombre" class="form-control">
                                 </div>
-
                                 <div class="mb-3">
-                                    <label for="cuatrimestreInput" class="form-label">Cuatrimestre:</label>
-                                    <input type="text" id="cuatrimestreInput" placeholder="Cuatrimestre"
+                                    <label for="descripcionInput" class="form-label">Descripción:</label>
+                                    <input type="text" id="descripcionInput" placeholder="Descripcion"
                                         class="form-control">
                                 </div>
-
-                                <div class="mb-3">
-                                    <label for="turnoInput" class="form-label">Turno:</label>
-                                    <input type="text" id="turnoInput" placeholder="Turno"
-                                        class="form-control">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="idPeriodoInput" class="form-label">IDperiodo:</label>
-                                    <input type="text" id="idPeriodoInput" placeholder="IDPeriodo"
-                                        class="form-control">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="idEspecialidadInput" class="form-label">IDespecialidad:</label>
-                                    <input type="text" id="idEspecialidadInput" placeholder="IDespecialidad"
-                                        class="form-control">
-                                </div>
-
                             </div>
                             <div class="modal-footer">
                                 <button id="cerrar" type="button" class="btn btn-danger" style="background-color: red;"
@@ -132,12 +107,8 @@
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Nombre grupo</th>
-                                <th>Cuatrimestre</th>
-                                <th>Turno</th>
-                                <th>Periodo ID</th>
-                                <th>Especialidad ID</th>
-                                <th>Nombre especialidad</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
                                 <th class="align-items-center justify-content-center">Acciones</th>
                             </tr>
                         </thead>
@@ -178,29 +149,22 @@
                     }
                 },
                 ajax: {
-                    url: 'http://localhost:3000/grupo/get',
+                    url: 'http://localhost:3000/division/get',
                     dataSrc: 'content'
                 },
                 columns: [
-                    { data: 'IDgrupo' },
-                    { data: 'NombreGrupo' },
-                    { data: 'Cuatrimestre' },
-                    { data: 'Turno' },
-                    { data: 'PeriodoID' },
-                    { data: 'EspecialidadID' },
-                    { data: 'NombresEspecialidad' },
+                    { data: 'IDdivision' },
+                    { data: 'NombreDivision' },
+                    { data: 'DescripcionDiv' },
                     {
                         data: null,
                         render: function (data, type, row) {
-                            const IDgrupo = row.IDgrupo;
-                            const NombreGrupo = row.NombreGrupo;
-                            const Cuatrimestre = row.Cuatrimestre;
-                            const Turno = row.Turno;
-                            const PeriodoID = row.PeriodoID;
-                            const EspecialidadID = row.EspecialidadID;
+                            const IDdivision = row.IDdivision;
+                            const NombreDivision = row.NombreDivision;
+                            const DescripcionDiv = row.DescripcionDiv;
                             // Botones de Acciones
-                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDgrupo},'${NombreGrupo}','${Cuatrimestre}','${Turno}',${PeriodoID},${EspecialidadID})">Editar</button> 
-                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDgrupo})">Eliminar</button>`;
+                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDdivision},'${NombreDivision}','${DescripcionDiv}')">Editar</button>
+                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDdivision})">Eliminar</button>`;
                         }
                     }
                 ]
@@ -214,36 +178,26 @@
 
         function cerrarModal() {
             $("#modal").modal('hide')
-            window.location.href = './grupos.html'
+            window.location.href = './divisionesdatatable.html'
         }
 
-        
-        function editarRegistro(IDgrupo, NombreGrupo, Cuatrimestre, Turno, PeriodoID, EspecialidadID) {
-
+        function editarRegistro(IDdivision, NombreDivision, DescripcionDiv) {
             //pasando los valores al modal
-            $('#nombreInput').val(NombreGrupo);
-            $('#cuatrimestreInput').val(Cuatrimestre);
-            $('#ids').val(IDgrupo);
-            $('#turnoInput').val(Turno);
-            $('#idPeriodoInput').val(PeriodoID);
-            $('#idEspecialidadInput').val(EspecialidadID);
-
+            $('#nombreInput').val(NombreDivision);
+            $('#descripcionInput').val(DescripcionDiv);
+            $('#ids').val(IDdivision);
 
             $('#modal').modal('toggle');
         }
 
-        function guardarCambios(IDgrupo) {
-            //valores nuevos
+        function guardarCambios(IDdivision) {
             const nom = $('#nombreInput').val();
-            const cuat = $('#cuatrimestreInput').val();
-            const turn = $('#turnoInput').val();
-            const idP = $('#idPeriodoInput').val();
-            const idE = $('#idEspecialidadInput').val();
+            const des = $('#descripcionInput').val();
 
             $.ajax({
                 method: "PUT",
-                url: `http://localhost:3000/grupo/update/${IDgrupo}`,
-                data: { nombre: nom, cuatrimestre: cuat, turno: turn, idPeriodo: idP, idEspecialidad: idP}, //mandas los valores nuevos
+                url: `http://localhost:3000/division/update/${IDdivision}`,
+                data: { nombre: nom, descripcion: des },
                 success: function (response) {
                     console.log("Registro actualizado con éxito", response);
                 },
@@ -254,18 +208,19 @@
             cerrarModal();
         }
 
-        function eliminarRegistro(IDgrupo) {
+        function eliminarRegistro(IDdivision) {
             $.ajax({
                 method: "DELETE",
-                url: `http://localhost:3000/grupo/delete/${IDgrupo}`,
+                url: `http://localhost:3000/division/delete/${IDdivision}`,
                 success: function (response) {
                     console.log("Registro eliminado", response);
-                         
+                    window.location.href = './divisionesdatatable.html'
                 },
                 error: function (error) {
                     console.error("Error al actualizar el registro", error);
                 }
             });
+            window.location.href = './divisionesdatatable.html'
         }
     </script>
 

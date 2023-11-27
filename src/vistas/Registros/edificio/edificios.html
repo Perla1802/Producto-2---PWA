@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Periodos</title>
+    <title>Edificios</title>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -45,12 +45,12 @@
             <div class="menu">
                 <nav>
                     <ul>
-                        <li><a href="/src/vistas/divisionesdatatable.html">Divisiones</a></li>
-                        <li><a href="/src/vistas/especialidades.html">Especialidades</a></li>
-                        <li><a href="/src/vistas/edificios.html">Edificios</a></li>
-                        <li><a href="/src/vistas/aulas.html">Aulas</a></li>
-                        <li><a href="/src/vistas/periodos.html">Periodos</a></li>
-                        <li><a href="/src/vistas/grupos.html">Grupos</a></li>
+                        <li><a href="/src/vistas/Registros/division/divisionesdatatable.html">Divisiones</a></li>
+                        <li><a href="/src/vistas/Registros/especialidad/especialidades.html">Especialidades</a></li>
+                        <li><a href="/src/vistas/Registros/edificio/edificios.html">Edificios</a></li>
+                        <li><a href="/src/vistas/Registros/aula/aulas.html">Aulas</a></li>
+                        <li><a href="/src/vistas/Registros/periodo/periodos.html">Periodos</a></li>
+                        <li><a href="/src/vistas/Registros/grupo/grupos.html">Grupos</a></li>
                     </ul>
                 </nav>
 
@@ -66,12 +66,12 @@
             <!-- Contenido principal -->
             <main role="main" class="col-md-9 ml-sm-auto col-lg-12" style="margin-top: 20px;">
                 <div class="mb-3 border-bottom">
-                    <h1 id="title" style="font-size: 40px;">Periodos</h1>
+                    <h1 id="title" style="font-size: 40px;">Edificios</h1>
                 </div>
 
-                <!-- <a href="/src/vistas/Registros/periodo.html" class="btn"
+                <a href="/src/vistas/Registros/edificio/edificio.html" class="btn"
                     style="border-color: #134e4a; background-color:#134e4a; color: white; margin-bottom: 30px;">Agregar
-                </a> -->
+                </a>
 
 
                 <!-- Modal -->
@@ -79,31 +79,25 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Editar Registros</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Editar Registro</h5>
                             </div>
                             <div class="modal-body">
                                 <!-- Campos de entrada para folio y dirección -->
-                                <input type="text" id="ids" hidden>
+                                <input type="text" id="ids">
                                 <div class="mb-3">
                                     <label for="nombreInput" class="form-label">Nombre:</label>
                                     <input type="text" id="nombreInput" placeholder="Nombre" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="fechaInicio" class="form-label">Fecha inicial:</label>
-                                    <input type="text" id="fechaInicio" placeholder="FechaInicio"
+                                    <label for="descripcionInput" class="form-label">Descripción:</label>
+                                    <input type="text" id="descripcionInput" placeholder="Descripcion"
                                         class="form-control">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="fechaFin" class="form-label">Fecha final:</label>
-                                    <input type="text" id="fechaFin" placeholder="fechaFin"
-                                        class="form-control">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="anio" class="form-label">Año:</label>
-                                    <input type="text" id="anio" placeholder="anio"
+                                    <label for="idDivision" class="form-label">IDdivision:</label>
+                                    <input type="text" id="idDivision" placeholder="idDivision"
                                         class="form-control">
                                 </div>
 
@@ -126,10 +120,10 @@
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Nombre</th>
-                                <th>Fecha Inicial</th>
-                                <th>Fecha Final</th>
-                                <th>Año</th>
+                                <th>Nombre edificio</th>
+                                <th>Descripción edificio</th>
+                                <th>Division ID</th>
+                                <th>Nombre division</th>
                                 <th class="align-items-center justify-content-center">Acciones</th>
                             </tr>
                         </thead>
@@ -170,26 +164,25 @@
                     }
                 },
                 ajax: {
-                    url: 'http://localhost:3000/periodo/get',
+                    url: 'http://localhost:3000/edificio/get',
                     dataSrc: 'content'
                 },
                 columns: [
-                    { data: 'IDperiodo' },
-                    { data: 'NombrePeriodo' },
-                    { data: 'P_inicio' },
-                    { data: 'P_Fin' },
-                    { data: 'Año' },
+                    { data: 'IDedificio' },
+                    { data: 'NombreEdificio' },
+                    { data: 'DescripcionEdif' },
+                    { data: 'DivisionID' },
+                    { data: 'NombreDivision' },
                     {
                         data: null,
                         render: function (data, type, row) {
-                            const IDperiodo = row.IDperiodo;
-                            const NombrePeriodo = row.NombrePeriodo;
-                            const FechaInicio = row.P_inicio;
-                            const FechaFin = row.P_Fin;
-                            const Anio = row.Año;
+                            const IDedificio = row.IDedificio;
+                            const NombreEdificio = row.NombreEdificio;
+                            const DescripcionEdif = row.DescripcionEdif;
+                            const DivisionID = row.DivisionID;
                             // Botones de Acciones
-                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDperiodo},'${NombrePeriodo}','${FechaInicio}','${FechaFin}',${Anio})">Editar</button> 
-                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDperiodo})">Eliminar</button>`;
+                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDedificio},'${NombreEdificio}','${DescripcionEdif}',${DivisionID})">Editar</button> 
+                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDedificio})">Eliminar</button>`;
                         }
                     }
                 ]
@@ -203,32 +196,32 @@
 
         function cerrarModal() {
             $("#modal").modal('hide')
-            //window.location.href = '/src/vistas/periodos.html'
+            window.location.href = './edificios.html'
         }
 
         //No se ha modificado esta parte
-        function editarRegistro(IDperiodo, NombrePeriodo, FechaInicio, FechaFin, Anio) {
+        function editarRegistro(IDedificio, NombreEdificio, DescripcionEdif, IDdivision) {
+
             //pasando los valores al modal
-            $('#nombreInput').val(NombrePeriodo);
-            $('#fechaInicio').val(FechaInicio);
-            $('#fechaFin').val(FechaFin);
-            $('#anio').val(Anio);
-            $('#ids').val(IDperiodo);
+            $('#nombreInput').val(NombreEdificio);
+            $('#descripcionInput').val(DescripcionEdif);
+            $('#ids').val(IDedificio);
+            $('#idDivision').val(IDdivision);
+
 
             $('#modal').modal('toggle');
         }
 
-        function guardarCambios(IDperiodo) {
+        function guardarCambios(IDedificio) {
             //valores nuevos
             const nom = $('#nombreInput').val();
-            const fechaI = $('#fechaInicio').val();
-            const fechaF = $('#fechaFin').val();
-            const anios = $('#anio').val();
+            const des = $('#descripcionInput').val();
+            const idDivision = $('#idDivision').val();
 
             $.ajax({
                 method: "PUT",
-                url: `http://localhost:3000/periodo/update/${IDperiodo}`,
-                data: { nombre: nom, fechaInicio: fechaI, fechaFin: fechaF, anio: anios}, //mandas los valores nuevos
+                url: `http://localhost:3000/edificio/update/${IDedificio}`,
+                data: { nombre: nom, descripcion: des, idDivision: idDivision}, //mandas los valores nuevos
                 success: function (response) {
                     console.log("Registro actualizado con éxito", response);
                 },
@@ -239,18 +232,19 @@
             cerrarModal();
         }
 
-        function eliminarRegistro(IDperiodo) {
+        function eliminarRegistro(IDedificio) {
             $.ajax({
                 method: "DELETE",
-                url: `http://localhost:3000/aulas/delete/${IDperiodo}`,
+                url: `http://localhost:3000/edificio/delete/${IDedificio}`,
                 success: function (response) {
                     console.log("Registro eliminado", response);
-                    window.location.href = '/src/vistas/aulas.html'    
+                    window.location.href = './edificios.html'    
                 },
                 error: function (error) {
                     console.error("Error al actualizar el registro", error);
                 }
             });
+            window.location.href = './edificios.html' 
         }
     </script>
 
