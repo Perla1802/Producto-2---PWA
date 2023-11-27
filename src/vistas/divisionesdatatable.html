@@ -79,18 +79,15 @@
                             <div class="modal-body">
                                 <!-- Campos de entrada para folio y dirección -->
                                 <input type="text" id="ids" hidden>
-
                                 <div class="mb-3">
                                     <label for="nombreInput" class="form-label">Nombre:</label>
                                     <input type="text" id="nombreInput" placeholder="Nombre" class="form-control">
                                 </div>
-
                                 <div class="mb-3">
                                     <label for="descripcionInput" class="form-label">Descripción:</label>
                                     <input type="text" id="descripcionInput" placeholder="Descripcion"
                                         class="form-control">
                                 </div>
-
                             </div>
                             <div class="modal-footer">
                                 <button id="cerrar" type="button" class="btn btn-danger" style="background-color: red;"
@@ -177,8 +174,6 @@
             $('#toggleBtn').on('click', function () {
                 $('#sidebar').toggleClass('collapsed');
             });
-
-            dataTable.draw();
         });
 
         function cerrarModal() {
@@ -205,16 +200,11 @@
                 data: { nombre: nom, descripcion: des },
                 success: function (response) {
                     console.log("Registro actualizado con éxito", response);
-
-                    var dataTable = $('#dataTable').DataTable();
-                    dataTable.destroy();
-                    $('#dataTable').DataTable();
                 },
                 error: function (error) {
                     console.error("Error al actualizar el registro", error);
                 }
             });
-
             cerrarModal();
         }
 
@@ -228,6 +218,7 @@
                     console.error("Error al actualizar el registro", error);
                 }
             });
+            window.location.href = './divisionesdatatable.html'
         }
     </script>
 

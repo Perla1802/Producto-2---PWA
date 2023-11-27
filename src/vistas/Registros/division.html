@@ -37,7 +37,7 @@
                         <h5 class="modal-title" id="exampleModalLabel">Inserción Correcta</h5>
                     </div>
                     <div class="modal-body">
-                        <h3 class="h1"> LA DIVISIÓN SE INCERTO CORRECTAMENTE </h3>
+                        <h5 class="h5"> Éxito </h5>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onclick="cerrarModal()">Aceptar</button>
@@ -104,6 +104,7 @@
                             console.log('Inserción de division correcta.', data);
                             $('#nombre').val('');
                             $('#descripcion').val('');
+                            $("#modal").modal('toggle');
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             errorDiv.html("Error intente mas tarde.");
@@ -118,7 +119,6 @@
             }
         }
     </script>
-
 
 </body>
 

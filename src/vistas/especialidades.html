@@ -59,168 +59,190 @@
         </div>
     </header>
 
-      <!--INICIO-->
-        <div class="container-fluid">
+    <!--INICIO-->
+    <div class="container-fluid">
 
-            <div class="row">
-                <!-- Contenido principal -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-12" style="margin-top: 20px;">
-                    <div class="mb-3 border-bottom">
-                        <h1 id="title" style="font-size: 40px;">Especialidades</h1>
-                    </div>
-    
-                    <a href="/src/vistas/Registros/especialidad.html" class="btn"
-                        style="border-color: #134e4a; background-color:#134e4a; color: white; margin-bottom: 30px;">Agregar
-                        </a>
-    
-    
-                    <!-- Modal -->
-                    <div class="modal fade" id="modal" role="edit" aria-labelledby="Editar" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel" >Editar Registro</h5>
+        <div class="row">
+            <!-- Contenido principal -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-12" style="margin-top: 20px;">
+                <div class="mb-3 border-bottom">
+                    <h1 id="title" style="font-size: 40px;">Especialidades</h1>
+                </div>
+
+                <a href="/src/vistas/Registros/especialidad.html" class="btn"
+                    style="border-color: #134e4a; background-color:#134e4a; color: white; margin-bottom: 30px;">Agregar
+                </a>
+
+                <!-- Modal -->
+                <div class="modal fade" id="modal" role="edit" aria-labelledby="Editar" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Editar Registro</h5>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Campos de entrada para folio y dirección -->
+                                <input type="text" id="ids">
+                                <div class="mb-3">
+                                    <label for="nombreInput" class="form-label">Nombre:</label>
+                                    <input type="text" id="nombreInput" placeholder="Nombre" class="form-control">
                                 </div>
-                                <div class="modal-body d-flex align-items-center justify-content-center">
-                                    <!-- Campos de entrada para folio y dirección -->
-                                    <input type="text" id="ids" hidden>
-                                    <p>Division ID: <input type="text" id="divisionIDInput" placeholder="ID"> </p>
+
+                                <div class="mb-3">
+                                    <label for="descripcionInput" class="form-label">Descripción:</label>
+                                    <input type="text" id="descripcionInput" placeholder="Descripcion"
+                                        class="form-control">
                                 </div>
-                                <div class="modal-footer">
-                                    <button id="cerrar" type="button" class="btn btn-danger" style="background-color: red;" onclick="cerrarModal()">
-                                        <i class="fa fa-times" aria-hidden="true"></i> Cancelar
-                                    </button>
-                                    <button type="button" class="btn btn-primary" style="background-color: blue;"
-                                        onclick="guardarCambios ($('#ids').val())">Guardar Cambios</button>
+
+                                <div class="mb-3">
+                                    <label for="idDivision" class="form-label">IDdivision:</label>
+                                    <input type="text" id="idDivision" placeholder="idDivision"
+                                        class="form-control">
                                 </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button id="cerrar" type="button" class="btn btn-danger" style="background-color: red;"
+                                    onclick="cerrarModal()">
+                                    <i class="fa fa-times" aria-hidden="true"></i> Cancelar
+                                </button>
+                                <button type="button" class="btn btn-primary" style="background-color: blue;"
+                                    onclick="guardarCambios($('#ids').val())">Guardar Cambios</button>
                             </div>
                         </div>
                     </div>
-    
-                    <!-- DataTable -->
-                    <div class="table-responsive">
-                        <table id="dataTable" class="table">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nombre</th>
-                                    <th>Descripción</th>
-                                    <th>Division ID</th>
-                                    <th>Nombre Division</th>
-                                    <th class="align-items-center justify-content-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-    
-                </main>
-    
-            </div>
+                </div>
+
+                <!-- DataTable -->
+                <div class="table-responsive">
+                    <table id="dataTable" class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Descripción </th>
+                                <th>Division ID</th>
+                                <th>Nombre division</th>
+                                <th class="align-items-center justify-content-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+            </main>
+
         </div>
-    
-        <script>
-            $(document).ready(function () {
-                var dataTable = $('#dataTable').DataTable({
-                    language: {
-                        "sProcessing": "Procesando...",
-                        "sLengthMenu": "Mostrar _MENU_ registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla",
-                        "sInfo": "Mostrado _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "No se encontro información.",
-                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix": "",
-                        "sSearch": "Buscar folio:",
-                        "sUrl": "",
-                        "sInfoThousands": ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": ">",
-                            "sPrevious": "<"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    },
-                    ajax: {
-                        url: 'http://localhost:3000/especialidades/get',
-                        dataSrc: 'content'
-                    },
-                    columns: [
-                        { data: 'IDespecialidad' },
-                        { data: 'NombresEspecialidad' },
-                        { data: 'DescripcionEsp' },
-                        { data: 'DivisionID' },
-                        { data: 'NombreDivision' },
-                        {
-                            data: null,
-                            render: function (data, type, row) {
-                                const IDespecialidad = row.IDespecialidad;
-                                const NombresEspecialidad =row.NombresEspecialidad;
-                                const DescripcionEsp=row.DescripcionEsp;
-                                const DivisionID = row.DivisionID;
-                                const NombreDivision = row.NombreDivision;
-                                // Botones de Acciones
-                                return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDespecialidad},'${NombresEspecialidad}','${DivisionID}','${NombreDivision}','${DescripcionEsp}')">Editar</button>`;
-                            }
-                        }
-                    ]
-                });
-    
-                // Toggle para colapsar/expandir el contenido principal en pantallas pequeñas
-                $('#toggleBtn').on('click', function () {
-                    $('#sidebar').toggleClass('collapsed');
-                });
-    
-                dataTable.draw();
-            });
-    
-            function cerrarModal() {
-                $("#modal").modal('hide')
-                window.location.href = './especialidades.html'
-            }
-    
-            function editarRegistro(DivisionID) {
-    
-                //pasando los valores al modal
-                $('#divisionIDInput').val(DivisionID);
-    
-                $('#modal').modal('toggle');
-    
-            }
-            
+    </div>
 
-
-            //Funcion aun no funciona
-
-            function guardarCambios(DivisionID) {
-                const nom = $('#nombreInput').val();
-                const des = $('#descripcionInput').val();
-    
-                $.ajax({
-                    method: "PUT",
-                    url: `http://localhost:3000/especialidades/update/3${DivisionID}`,
-                    data: { NombreDivision: nom, DescripcionDiv: des },
-                    success: function (response) {
-                        console.log("Registro actualizado con éxito", response);
-    
-                        var dataTable = $('#dataTable').DataTable();
-                        dataTable.destroy();
-                        $('#dataTable').DataTable();
+    <script>
+        $(document).ready(function () {
+            var dataTable = $('#dataTable').DataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrado _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "No se encontro información.",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": ">",
+                        "sPrevious": "<"
                     },
-                    error: function (error) {
-                        console.error("Error al actualizar el registro", error);
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                     }
-                });
-    
-                cerrarModal();
-            }
-        </script>
-    
+                },
+                ajax: {
+                    url: 'http://localhost:3000/especialidades/get',
+                    dataSrc: 'content'
+                },
+                columns: [
+                    { data: 'IDespecialidad' },
+                    { data: 'NombresEspecialidad' },
+                    { data: 'DescripcionEsp' },
+                    { data: 'DivisionID' },
+                    { data: 'NombreDivision' },
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            const IDespecialidad = row.IDespecialidad;
+                            const NombreEspecialidad = row.NombresEspecialidad;
+                            const DescripcionEsp = row.DescripcionEsp;
+                            const DivisionID = row.DivisionID;
+                            // Botones de Acciones
+                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDespecialidad},'${NombreEspecialidad}','${DescripcionEsp}',${DivisionID})">Editar</button> 
+                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDespecialidad})">Eliminar</button>`;
+                        }
+                    }
+                ]
+            });
+
+            // Toggle para colapsar/expandir el contenido principal en pantallas pequeñas
+            $('#toggleBtn').on('click', function () {
+                $('#sidebar').toggleClass('collapsed');
+            });
+        });
+
+        function cerrarModal() {
+            $("#modal").modal('hide')
+            window.location.href = './especialidades.html'
+        }
+
+        //No se ha modificado esta parte
+        function editarRegistro(IDespecialidad, NombreEspecialidad, DescripcionEsp, IDdivision) {
+
+            //pasando los valores al modal
+            $('#nombreInput').val(NombreEspecialidad);
+            $('#descripcionInput').val(DescripcionEsp);
+            $('#ids').val(IDespecialidad);
+            $('#idDivision').val(IDdivision);
+
+            $('#modal').modal('toggle');
+        }
+
+        function guardarCambios(IDespecialidad) {
+            //valores nuevos
+            const nom = $('#nombreInput').val();
+            const des = $('#descripcionInput').val();
+            const idDivision = $('#idDivision').val();
+
+            $.ajax({
+                method: "PUT",
+                url: `http://localhost:3000/especialidades/update/${IDespecialidad}`,
+                data: { nombre: nom, descripcion: des, idDivision: idDivision}, //mandas los valores nuevos
+                success: function (response) {
+                    console.log("Registro actualizado con éxito", response);
+                },
+                error: function (error) {
+                    console.error("Error al actualizar el registro", error);
+                }
+            });
+            cerrarModal();
+        }
+
+        function eliminarRegistro(IDespecialidad) {
+            $.ajax({
+                method: "DELETE",
+                url: `http://localhost:3000/especialidades/delete/${IDespecialidad}`,
+                success: function (response) {
+                    console.log("Registro eliminado", response);                },
+                error: function (error) {
+                    console.error("Error al actualizar el registro", error);
+                }
+            });
+        }
+    </script>
+
 </body>
 
 </html>
