@@ -26,14 +26,11 @@
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
-
-
 </head>
 
 <body>
 
     <!--Header - Menu-->
-
     <header>
         <div class="container__header">
             <div class="logo">
@@ -53,170 +50,187 @@
                         <li><a href="/src/vistas/grupos.html">Grupos</a></li>
                     </ul>
                 </nav>
-
                 <a href="/src/index.html" class="btn__quote">Salir</a>
             </div>
         </div>
     </header>
 
-      <!--INICIO-->
-        <div class="container-fluid">
+    <!--INICIO-->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Contenido principal -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-12" style="margin-top: 20px;">
+                <div class="mb-3 border-bottom">
+                    <h1 id="title" style="font-size: 40px;">División</h1>
+                </div>
 
-            <div class="row">
-                <!-- Contenido principal -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-12" style="margin-top: 20px;">
-                    <div class="mb-3 border-bottom">
-                        <h1 id="title" style="font-size: 40px;">División</h1>
-                    </div>
-    
-                    <a href="/src/vistas/Registros/division.html" class="btn"
-                        style="border-color: #134e4a; background-color:#134e4a; color: white; margin-bottom: 30px;">Agregar
-                        </a>
-    
-    
-                    <!-- Modal -->
-                    <div class="modal fade" id="modal" role="edit" aria-labelledby="Editar" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel" >Editar Registro</h5>
+                <a href="/src/vistas/Registros/division.html" class="btn"
+                    style="border-color: #134e4a; background-color:#134e4a; color: white; margin-bottom: 30px;">Agregar
+                </a>
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="modal" role="edit" aria-labelledby="Editar" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Editar Registros</h5>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Campos de entrada para folio y dirección -->
+                                <input type="text" id="ids" hidden>
+
+                                <div class="mb-3">
+                                    <label for="nombreInput" class="form-label">Nombre:</label>
+                                    <input type="text" id="nombreInput" placeholder="Nombre" class="form-control">
                                 </div>
-                                <div class="modal-body d-flex align-items-center justify-content-center">
-                                    <!-- Campos de entrada para folio y dirección -->
-                                    <input type="text" id="ids" hidden>
-                                    <p>Nombre: <input type="text" id="nombreInput" placeholder="Nombre"> </p>
-                                    <p>Descripción: <input type="text" id="descripcionInput" placeholder="Descripcion"> </p>
+
+                                <div class="mb-3">
+                                    <label for="descripcionInput" class="form-label">Descripción:</label>
+                                    <input type="text" id="descripcionInput" placeholder="Descripcion"
+                                        class="form-control">
                                 </div>
-                                <div class="modal-footer">
-                                    <button id="cerrar" type="button" class="btn btn-danger" style="background-color: red;" onclick="cerrarModal()">
-                                        <i class="fa fa-times" aria-hidden="true"></i> Cancelar
-                                    </button>
-                                    <button type="button" class="btn btn-primary" style="background-color: blue;"
-                                        onclick="guardarCambios ($('#ids').val())">Guardar Cambios</button>
-                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button id="cerrar" type="button" class="btn btn-danger" style="background-color: red;"
+                                    onclick="cerrarModal()">
+                                    <i class="fa fa-times" aria-hidden="true"></i> Cancelar
+                                </button>
+                                <button type="button" class="btn btn-primary" style="background-color: blue;"
+                                    onclick="guardarCambios($('#ids').val())">Guardar Cambios</button>
                             </div>
                         </div>
                     </div>
-    
-                    <!-- DataTable -->
-                    <div class="table-responsive">
-                        <table id="dataTable" class="table">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nombre</th>
-                                    <th>Descripción</th>
-                                    <th class="align-items-center justify-content-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-    
-                </main>
-    
-            </div>
+                </div>
+
+                <!-- DataTable -->
+                <div class="table-responsive">
+                    <table id="dataTable" class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th class="align-items-center justify-content-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+            </main>
+
         </div>
-    
-        <script>
-            $(document).ready(function () {
-                var dataTable = $('#dataTable').DataTable({
-                    language: {
-                        "sProcessing": "Procesando...",
-                        "sLengthMenu": "Mostrar _MENU_ registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla",
-                        "sInfo": "Mostrado _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "No se encontro información.",
-                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix": "",
-                        "sSearch": "Buscar folio:",
-                        "sUrl": "",
-                        "sInfoThousands": ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": ">",
-                            "sPrevious": "<"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    },
-                    ajax: {
-                        url: 'http://localhost:3000/division/get',
-                        dataSrc: 'content'
-                    },
-                    columns: [
-                        { data: 'IDdivision' },
-                        { data: 'NombreDivision' },
-                        { data: 'DescripcionDiv' },
-                        {
-                            data: null,
-                            render: function (data, type, row) {
-                                const IDdivision = row.IDdivision;
-                                const NombreDivision = row.NombreDivision;
-                                const DescripcionDiv = row.DescripcionDiv;
-                                // Botones de Acciones
-                                return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDdivision},'${NombreDivision}','${DescripcionDiv}')">Editar</button>`;
-                            }
-                        }
-                    ]
-                });
-    
-                // Toggle para colapsar/expandir el contenido principal en pantallas pequeñas
-                $('#toggleBtn').on('click', function () {
-                    $('#sidebar').toggleClass('collapsed');
-                });
-    
-                dataTable.draw();
-            });
-    
-            function cerrarModal() {
-                $("#modal").modal('hide')
-                window.location.href = './divisionesdatatable.html'
-            }
-    
-            function editarRegistro(IDdivision, NombreDivision, DescripcionDiv) {
-    
-                //pasando los valores al modal
-                $('#nombreInput').val(NombreDivision);
-                $('#descripcionInput').val(DescripcionDiv);
-                $('#ids').val(IDdivision);
-    
-                $('#modal').modal('toggle');
-    
-            }
+    </div>
 
-
-            //Funcion no funciona aun :(
-    
-            function guardarCambios(IDdivision) {
-                const nom = $('#nombreInput').val();
-                const des = $('#descripcionInput').val();
-    
-                $.ajax({
-                    method: "PUT",
-                    url: `http://localhost:3000/division/update/2${IDdivision}`,
-                    data: { NombreDivision: nom, DescripcionDiv: des },
-                    success: function (response) {
-                        console.log("Registro actualizado con éxito", response);
-    
-                        var dataTable = $('#dataTable').DataTable();
-                        dataTable.destroy();
-                        $('#dataTable').DataTable();
+    <script>
+        $(document).ready(function () {
+            var dataTable = $('#dataTable').DataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrado _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "No se encontro información.",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": ">",
+                        "sPrevious": "<"
                     },
-                    error: function (error) {
-                        console.error("Error al actualizar el registro", error);
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                     }
-                });
-    
-                cerrarModal();
-            }
-        </script>
-    
+                },
+                ajax: {
+                    url: 'http://localhost:3000/division/get',
+                    dataSrc: 'content'
+                },
+                columns: [
+                    { data: 'IDdivision' },
+                    { data: 'NombreDivision' },
+                    { data: 'DescripcionDiv' },
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            const IDdivision = row.IDdivision;
+                            const NombreDivision = row.NombreDivision;
+                            const DescripcionDiv = row.DescripcionDiv;
+                            // Botones de Acciones
+                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDdivision},'${NombreDivision}','${DescripcionDiv}')">Editar</button>
+                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDdivision})">Eliminar</button>`;
+                        }
+                    }
+                ]
+            });
+
+            // Toggle para colapsar/expandir el contenido principal en pantallas pequeñas
+            $('#toggleBtn').on('click', function () {
+                $('#sidebar').toggleClass('collapsed');
+            });
+
+            dataTable.draw();
+        });
+
+        function cerrarModal() {
+            $("#modal").modal('hide')
+            window.location.href = './divisionesdatatable.html'
+        }
+
+        function editarRegistro(IDdivision, NombreDivision, DescripcionDiv) {
+            //pasando los valores al modal
+            $('#nombreInput').val(NombreDivision);
+            $('#descripcionInput').val(DescripcionDiv);
+            $('#ids').val(IDdivision);
+
+            $('#modal').modal('toggle');
+        }
+
+        function guardarCambios(IDdivision) {
+            const nom = $('#nombreInput').val();
+            const des = $('#descripcionInput').val();
+
+            $.ajax({
+                method: "PUT",
+                url: `http://localhost:3000/division/update/${IDdivision}`,
+                data: { nombre: nom, descripcion: des },
+                success: function (response) {
+                    console.log("Registro actualizado con éxito", response);
+
+                    var dataTable = $('#dataTable').DataTable();
+                    dataTable.destroy();
+                    $('#dataTable').DataTable();
+                },
+                error: function (error) {
+                    console.error("Error al actualizar el registro", error);
+                }
+            });
+
+            cerrarModal();
+        }
+
+        function eliminarRegistro(IDdivision) {
+            $.ajax({
+                method: "DELETE",
+                url: `http://localhost:3000/division/delete/${IDdivision}`,
+                success: function (response) {
+                    console.log("Registro eliminado", response);                },
+                error: function (error) {
+                    console.error("Error al actualizar el registro", error);
+                }
+            });
+        }
+    </script>
+
 </body>
 
 </html>
