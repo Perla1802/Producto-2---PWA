@@ -28,47 +28,91 @@
                 </div>
             </header>
         </div>
+
+        <!-- Modal insercion correcata o error -->
+        <div class="modal fade" id="modal" role="edit" aria-labelledby="Editar" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel" >Inserción Correcta</h5>
+                        
+                    </div>
+                    
+                    <div class="modal-body">
+                        <h5 class="h5"> Éxito </h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="cerrarModal()">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <header class="cont">
             <!-- Datos -->
             <h3 class="subtitle">Grupo:</h3>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-lg-12">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" class="form-control" id="nombre">
                     </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
                     <div class="mb-3">
                         <label for="cuatrimestre" class="form-label">Cuatrimestre</label>
                         <input type="text" class="form-control" id="cuatrimestre">
                     </div>
-
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-lg-12">
                     <div class="mb-3">
                         <label for="turno" class="form-label">Turno</label>
                         <input type="text" class="form-control" id="turno">
                     </div>
                 </div>
             </div>
-        
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="mb-3">
+                        <label for="idPeriodo" class="form-label">Id Periodo</label>
+                        <input type="text" class="form-control" id="idPeriodo">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="mb-3">
+                        <label for="idEspecialidad" class="form-label">Id Especialidad</label>
+                        <input type="text" class="form-control" id="idEspecialidad">
+                    </div>
+                </div>
+            </div>
+
+
             <!-- Botones Finales -->
             <div class="row">
                 <button type="button" onclick="regresar()" class="btn btn-danger"> Cancelar </button>
                 <button type="button" class="btn btn-primary" onclick="guardar()"> Guardar </button>
             </div>
-            <div>
-        
-            </div>
+
+            <div class="row">
+                <div id="error" class="text-danger"></div>
             </div>
         </header>
-        
     </div>
 
     <script>
         function cerrarModal() {
             $("#modal").modal('hide')
+            
         }
 
         function regresar() {
@@ -77,34 +121,40 @@
 
         async function guardar() {
             try {
-                const nombre = $('#nombre').val();
-                const descripcion = $('#descripcion').val();
+                const nombreG = $('#nombre').val();
+                const cuatrimestreG = $('#cuatrimestre').val();
+                const turnoG = $('#turno').val();
+                const idPeriodoG = $('#idPeriodo').val();
+                const idEspecialidadG = $('#idEspecialidad').val();
+                const errorDiv = $('#error');
 
-                if (nombre && descripcion) {
+                if (nombreG && cuatrimestreG && turnoG && idPeriodoG && idEspecialidadG) {
                     $.ajax({
                         url: 'http://localhost:3000/grupo/create',
                         type: 'POST',
                         contentType: 'application/json',
-                        data: JSON.stringify({ direccion: direccion }),
+                        data: JSON.stringify({ nombre: nombreG, cuatrimestre: cuatrimestreG, turno: turnoG, idPeriodo: idPeriodoG, idEspecialidad: idEspecialidadG}),
                         success: function (data) {
-                            console.log('Inserción del incidente correcta.', data);
                             $('#nombre').val('');
-                            $('#descripcion').val('');
+                            $('#cuatrimestre').val('');
+                            $('#turno').val('');
+                            $('#idPeriodo').val('');
+                            $('#idEspecialidad').val('');
+                            $("#modal").modal('toggle');
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
+                            errorDiv.html("Error intente más tarde.");
                             console.error('Error en la solicitud:', textStatus, errorThrown);
                         }
                     });
                 } else {
-                    $('#modal').modal('toggle');
-                    console.log('Faltan datos obligatorios.');
+                    errorDiv.html("Ingresa todos los campos.");
                 }
             } catch (error) {
                 console.log('Error:', error);
             }
         }
     </script>
-
 
 </body>
 

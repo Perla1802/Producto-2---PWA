@@ -79,16 +79,40 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Editar Registro</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Editar Grupo</h5>
                             </div>
-                            <div class="modal-body d-flex align-items-center justify-content-center">
+                            <div class="modal-body">
                                 <!-- Campos de entrada para folio y dirección -->
-                                <div>
-                                    <input type="text" id="ids" hidden>
-                                    <p>Nombre: <input type="text" id="nombreInput" placeholder="Nombre"> </p>
-                                    <p>Cuatrimestre: <input type="text" id="cuatrimestreIDInput" placeholder="Cuatrimestre"> </p>
-                                    <p>Turno: <input type="text" id="turnoIDInput" placeholder="Turno"> </p>
+                                <input type="text" id="ids" hidden>
+                                <div class="mb-3">
+                                    <label for="nombreInput" class="form-label">Nombre:</label>
+                                    <input type="text" id="nombreInput" placeholder="Nombre" class="form-control">
                                 </div>
+
+                                <div class="mb-3">
+                                    <label for="cuatrimestreInput" class="form-label">Cuatrimestre:</label>
+                                    <input type="text" id="cuatrimestreInput" placeholder="Cuatrimestre"
+                                        class="form-control">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="turnoInput" class="form-label">Turno:</label>
+                                    <input type="text" id="turnoInput" placeholder="Turno"
+                                        class="form-control">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="idPeriodoInput" class="form-label">IDperiodo:</label>
+                                    <input type="text" id="idPeriodoInput" placeholder="IDPeriodo"
+                                        class="form-control">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="idEspecialidadInput" class="form-label">IDespecialidad:</label>
+                                    <input type="text" id="idEspecialidadInput" placeholder="IDespecialidad"
+                                        class="form-control">
+                                </div>
+
                             </div>
                             <div class="modal-footer">
                                 <button id="cerrar" type="button" class="btn btn-danger" style="background-color: red;"
@@ -96,7 +120,7 @@
                                     <i class="fa fa-times" aria-hidden="true"></i> Cancelar
                                 </button>
                                 <button type="button" class="btn btn-primary" style="background-color: blue;"
-                                    onclick="guardarCambios ($('#ids').val())">Guardar Cambios</button>
+                                    onclick="guardarCambios($('#ids').val())">Guardar Cambios</button>
                             </div>
                         </div>
                     </div>
@@ -107,9 +131,9 @@
                     <table id="dataTable" class="table">
                         <thead>
                             <tr>
-                                <th>Id Grupo</th>
-                                <th>Nombre Grupo</th>
-                                <th>Custrimestre</th>
+                                <th>Id</th>
+                                <th>Nombre grupo</th>
+                                <th>Cuatrimestre</th>
                                 <th>Turno</th>
                                 <th>Periodo ID</th>
                                 <th>Especialidad ID</th>
@@ -138,7 +162,7 @@
                     "sInfoEmpty": "No se encontro información.",
                     "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
                     "sInfoPostFix": "",
-                    "sSearch": "Buscar folio:",
+                    "sSearch": "Buscar:",
                     "sUrl": "",
                     "sInfoThousands": ",",
                     "sLoadingRecords": "Cargando...",
@@ -172,11 +196,11 @@
                             const NombreGrupo = row.NombreGrupo;
                             const Cuatrimestre = row.Cuatrimestre;
                             const Turno = row.Turno;
-                            const PeriodoID = row.NombreDivision;
+                            const PeriodoID = row.PeriodoID;
                             const EspecialidadID = row.EspecialidadID;
-                            const NombresEspecialidad = row.NombreEspecialidad;
                             // Botones de Acciones
-                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDgrupo},'${NombreGrupo}','${Cuatrimestre}','${Turno}','${PeriodoID}','${EspecialidadID}','${NombresEspecialidad}')">Editar</button>`;
+                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDgrupo},'${NombreGrupo}','${Cuatrimestre}','${Turno}',${PeriodoID},${EspecialidadID})">Editar</button> 
+                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDgrupo})">Eliminar</button>`;
                         }
                     }
                 ]
@@ -186,8 +210,6 @@
             $('#toggleBtn').on('click', function () {
                 $('#sidebar').toggleClass('collapsed');
             });
-
-            dataTable.draw();
         });
 
         function cerrarModal() {
@@ -195,40 +217,55 @@
             window.location.href = './grupos.html'
         }
 
-        function editarRegistro(DivisionID) {
+        
+        function editarRegistro(IDgrupo, NombreGrupo, Cuatrimestre, Turno, PeriodoID, EspecialidadID) {
 
             //pasando los valores al modal
-            $('#divisionIDInput').val(DivisionID);
+            $('#nombreInput').val(NombreGrupo);
+            $('#cuatrimestreInput').val(Cuatrimestre);
+            $('#ids').val(IDgrupo);
+            $('#turnoInput').val(Turno);
+            $('#idPeriodoInput').val(PeriodoID);
+            $('#idEspecialidadInput').val(EspecialidadID);
+
 
             $('#modal').modal('toggle');
-
         }
 
-
-
-        //Funcion aun no funciona
-
-        function guardarCambios(DivisionID) {
+        function guardarCambios(IDgrupo) {
+            //valores nuevos
             const nom = $('#nombreInput').val();
-            const des = $('#descripcionInput').val();
+            const cuat = $('#cuatrimestreInput').val();
+            const turn = $('#turnoInput').val();
+            const idP = $('#idPeriodoInput').val();
+            const idE = $('#idEspecialidadInput').val();
 
             $.ajax({
                 method: "PUT",
-                url: `http://localhost:3000/especialidades/update/3${DivisionID}`,
-                data: { NombreDivision: nom, DescripcionDiv: des },
+                url: `http://localhost:3000/grupo/update/${IDgrupo}`,
+                data: { nombre: nom, cuatrimestre: cuat, turno: turn, idPeriodo: idP, idEspecialidad: idP}, //mandas los valores nuevos
                 success: function (response) {
                     console.log("Registro actualizado con éxito", response);
-
-                    var dataTable = $('#dataTable').DataTable();
-                    dataTable.destroy();
-                    $('#dataTable').DataTable();
                 },
                 error: function (error) {
                     console.error("Error al actualizar el registro", error);
                 }
             });
-
             cerrarModal();
+        }
+
+        function eliminarRegistro(IDgrupo) {
+            $.ajax({
+                method: "DELETE",
+                url: `http://localhost:3000/grupo/delete/${IDgrupo}`,
+                success: function (response) {
+                    console.log("Registro eliminado", response);
+                         
+                },
+                error: function (error) {
+                    console.error("Error al actualizar el registro", error);
+                }
+            });
         }
     </script>
 
