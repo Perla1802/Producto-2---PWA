@@ -16,5 +16,6 @@ Las tablas a utilizar son:
   https://github.com/Davix00/apis-universidad
 
 - Una vez ejecutado el proyecto, descargar este proyecto e instalar las dependencias
+
     $ npm install
 
