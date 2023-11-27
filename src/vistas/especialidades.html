@@ -235,7 +235,9 @@
                 method: "DELETE",
                 url: `http://localhost:3000/especialidades/delete/${IDespecialidad}`,
                 success: function (response) {
-                    console.log("Registro eliminado", response);                },
+                    console.log("Registro eliminado", response); 
+                    window.location.href = './especialidades.html' 
+                },
                 error: function (error) {
                     console.error("Error al actualizar el registro", error);
                 }
