@@ -69,9 +69,9 @@
                     <h1 id="title" style="font-size: 40px;">Periodos</h1>
                 </div>
 
-                <a href="/src/vistas/Registros/periodo.html" class="btn"
+                <!-- <a href="/src/vistas/Registros/periodo.html" class="btn"
                     style="border-color: #134e4a; background-color:#134e4a; color: white; margin-bottom: 30px;">Agregar
-                </a>
+                </a> -->
 
 
                 <!-- Modal -->
@@ -228,7 +228,7 @@
             $.ajax({
                 method: "PUT",
                 url: `http://localhost:3000/periodo/update/${IDperiodo}`,
-                data: { nombre: nom, fechaIncio: fechaI, fechaFin: fechaF, anio: anios}, //mandas los valores nuevos
+                data: { nombre: nom, fechaInicio: fechaI, fechaFin: fechaF, anio: anios}, //mandas los valores nuevos
                 success: function (response) {
                     console.log("Registro actualizado con éxito", response);
                 },
