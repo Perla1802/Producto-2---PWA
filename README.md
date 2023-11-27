@@ -16,6 +16,7 @@ Las tablas a utilizar son:
   https://github.com/Davix00/apis-universidad
 
 - Se descarga este proyecto y instalan las dependencias necesarias con:
+
     $ npm install
 
 - Despues se puede ejecutar el proyecto con GoLive desde Visual Studio Code.
