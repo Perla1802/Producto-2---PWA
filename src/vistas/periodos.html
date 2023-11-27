@@ -66,7 +66,7 @@
             <!-- Contenido principal -->
             <main role="main" class="col-md-9 ml-sm-auto col-lg-12" style="margin-top: 20px;">
                 <div class="mb-3 border-bottom">
-                    <h1 id="title" style="font-size: 40px;">Periodo</h1>
+                    <h1 id="title" style="font-size: 40px;">Periodos</h1>
                 </div>
 
                 <a href="/src/vistas/Registros/periodo.html" class="btn"
@@ -79,17 +79,34 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Editar Registro</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Editar Registros</h5>
                             </div>
-                            <div class="modal-body d-flex align-items-center justify-content-center">
+                            <div class="modal-body">
                                 <!-- Campos de entrada para folio y dirección -->
-                                <div>
-                                    <input type="text" id="ids" hidden>
-                                    <p>Nombre: <input type="text" id="nombreInput" placeholder="Nombre"> </p>
-                                    <p>Fecha de inicio: <input type="text" id="fechainicioIDInput" placeholder="Fecha de inicio"> </p>
-                                    <p>Fecha final: <input type="text" id="fechafinIDInput" placeholder="Fecha fin"> </p>
-                                    <p>Año: <input type="text" id="turnoIDInput" placeholder="Año"> </p>
+                                <input type="text" id="ids" hidden>
+                                <div class="mb-3">
+                                    <label for="nombreInput" class="form-label">Nombre:</label>
+                                    <input type="text" id="nombreInput" placeholder="Nombre" class="form-control">
                                 </div>
+
+                                <div class="mb-3">
+                                    <label for="fechaInicio" class="form-label">Fecha inicial:</label>
+                                    <input type="text" id="fechaInicio" placeholder="FechaInicio"
+                                        class="form-control">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="fechaFin" class="form-label">Fecha final:</label>
+                                    <input type="text" id="fechaFin" placeholder="fechaFin"
+                                        class="form-control">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="anio" class="form-label">Año:</label>
+                                    <input type="text" id="anio" placeholder="anio"
+                                        class="form-control">
+                                </div>
+
                             </div>
                             <div class="modal-footer">
                                 <button id="cerrar" type="button" class="btn btn-danger" style="background-color: red;"
@@ -97,7 +114,7 @@
                                     <i class="fa fa-times" aria-hidden="true"></i> Cancelar
                                 </button>
                                 <button type="button" class="btn btn-primary" style="background-color: blue;"
-                                    onclick="guardarCambios ($('#ids').val())">Guardar Cambios</button>
+                                    onclick="guardarCambios($('#ids').val())">Guardar Cambios</button>
                             </div>
                         </div>
                     </div>
@@ -108,10 +125,10 @@
                     <table id="dataTable" class="table">
                         <thead>
                             <tr>
-                                <th>Id periodo</th>
-                                <th>Nombre periodo</th>
-                                <th>Periodo inicio</th>
-                                <th>Periodo fin</th>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Fecha Inicial</th>
+                                <th>Fecha Final</th>
                                 <th>Año</th>
                                 <th class="align-items-center justify-content-center">Acciones</th>
                             </tr>
@@ -137,7 +154,7 @@
                     "sInfoEmpty": "No se encontro información.",
                     "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
                     "sInfoPostFix": "",
-                    "sSearch": "Buscar folio:",
+                    "sSearch": "Buscar:",
                     "sUrl": "",
                     "sInfoThousands": ",",
                     "sLoadingRecords": "Cargando...",
@@ -167,11 +184,12 @@
                         render: function (data, type, row) {
                             const IDperiodo = row.IDperiodo;
                             const NombrePeriodo = row.NombrePeriodo;
-                            const P_inicio = row.P_inicio;
-                            const P_Fin= row.P_Fin;
-                            const Año = row.Año;
+                            const FechaInicio = row.P_inicio;
+                            const FechaFin = row.P_Fin;
+                            const Anio = row.Año;
                             // Botones de Acciones
-                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDperiodo},'${NombrePeriodo}','${P_inicio}','${P_Fin}')">Editar</button>`;
+                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDperiodo},'${NombrePeriodo}','${FechaInicio}','${FechaFin}',${Anio})">Editar</button> 
+                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDperiodo})">Eliminar</button>`;
                         }
                     }
                 ]
@@ -181,49 +199,58 @@
             $('#toggleBtn').on('click', function () {
                 $('#sidebar').toggleClass('collapsed');
             });
-
-            dataTable.draw();
         });
 
         function cerrarModal() {
             $("#modal").modal('hide')
-            window.location.href = './periodos.html'
+            //window.location.href = '/src/vistas/periodos.html'
         }
 
-        function editarRegistro(DivisionID) {
-
+        //No se ha modificado esta parte
+        function editarRegistro(IDperiodo, NombrePeriodo, FechaInicio, FechaFin, Anio) {
             //pasando los valores al modal
-            $('#divisionIDInput').val(DivisionID);
+            $('#nombreInput').val(NombrePeriodo);
+            $('#fechaInicio').val(FechaInicio);
+            $('#fechaFin').val(FechaFin);
+            $('#anio').val(Anio);
+            $('#ids').val(IDperiodo);
 
             $('#modal').modal('toggle');
-
         }
 
-
-
-        //Funcion aun no funciona
-
-        function guardarCambios(DivisionID) {
+        function guardarCambios(IDperiodo) {
+            //valores nuevos
             const nom = $('#nombreInput').val();
-            const des = $('#descripcionInput').val();
+            const fechaI = $('#fechaInicio').val();
+            const fechaF = $('#fechaFin').val();
+            const anios = $('#anio').val();
 
             $.ajax({
                 method: "PUT",
-                url: `http://localhost:3000/especialidades/update/3${DivisionID}`,
-                data: { NombreDivision: nom, DescripcionDiv: des },
+                url: `http://localhost:3000/periodo/update/${IDperiodo}`,
+                data: { nombre: nom, fechaIncio: fechaI, fechaFin: fechaF, anio: anios}, //mandas los valores nuevos
                 success: function (response) {
                     console.log("Registro actualizado con éxito", response);
-
-                    var dataTable = $('#dataTable').DataTable();
-                    dataTable.destroy();
-                    $('#dataTable').DataTable();
                 },
                 error: function (error) {
                     console.error("Error al actualizar el registro", error);
                 }
             });
-
             cerrarModal();
+        }
+
+        function eliminarRegistro(IDperiodo) {
+            $.ajax({
+                method: "DELETE",
+                url: `http://localhost:3000/aulas/delete/${IDperiodo}`,
+                success: function (response) {
+                    console.log("Registro eliminado", response);
+                    window.location.href = '/src/vistas/aulas.html'    
+                },
+                error: function (error) {
+                    console.error("Error al actualizar el registro", error);
+                }
+            });
         }
     </script>
 
