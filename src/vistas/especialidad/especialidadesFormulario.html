@@ -23,7 +23,7 @@
             <header>
                 <div class="container__header">
                     <div class="menu">
-                        <a href="/src/vistas/Registros/especialidad/especialidades.html" class="btn__quote">Regresar</a>
+                        <a href="/src/vistas/especialidad/especialidades.html" class="btn__quote">Regresar</a>
                     </div>
                 </div>
             </header>
@@ -70,8 +70,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="mb-3">
-                        <label for="idDivision" class="form-label">Id Division</label>
-                        <input type="text" class="form-control" id="idDivision">
+                        <label for="idDivision" class="form-label">Division</label>
+                        <div class="dropdown">
+                            <select class="form-control" id="idDivision"></select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -95,8 +97,36 @@
         }
 
         function regresar() {
-            window.location.href = '/src/vistas/Registros/especialidad/especialidades.html'
+            window.location.href = '/src/vistas/especialidad/especialidades.html'
         }
+
+        async function cargarDivisiones() {
+            try {
+                $.ajax({
+                    url: 'http://localhost:3000/division/get',
+                    type: 'GET',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        const dropdown = $('#idDivision');
+                        dropdown.empty(); // Limpiar opciones existentes
+                        data.content.forEach((division) => {
+                            dropdown.append($('<option></option>').attr('value', division.IDdivision).text(division.NombreDivision));
+                        });
+                    },
+                    error: function (error) {
+                        errorDiv.html("Error intente más tarde.");
+                        console.error('Error en la solicitud:', error);
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error al cargar divisiones:', error);
+            }
+        }
+
+        $(document).ready(function () {
+            cargarDivisiones();
+        });
 
         async function guardar() {
             try {
@@ -104,29 +134,29 @@
                 const descripcionE = $('#descripcion').val();
                 const idDivisionE = $('#idDivision').val();
                 const errorDiv = $('#error');
-
+                console.log(nombreE,descripcionE,idDivisionE);
                 if (nombreE && descripcionE && idDivisionE) {
                     $.ajax({
                         url: 'http://localhost:3000/especialidades/create',
                         type: 'POST',
                         contentType: 'application/json',
-                        data: JSON.stringify({ nombre: nombreE, descripcion: descripcionE, idDivision: idDivisionE}),
+                        data: JSON.stringify({ nombre: nombreE, descripcion: descripcionE, idDivision: idDivisionE }),
                         success: function (data) {
                             $('#nombre').val('');
                             $('#descripcion').val('');
                             $('#idDivision').val('');
                             $("#modal").modal('toggle');
                         },
-                        error: function (jqXHR, textStatus, errorThrown) {
+                        error: function (error) {
                             errorDiv.html("Error intente más tarde.");
-                            console.error('Error en la solicitud:', textStatus, errorThrown);
+                            console.error('Error en la solicitud:', error);
                         }
                     });
                 } else {
                     errorDiv.html("Ingresa todos los campos.");
                 }
             } catch (error) {
-                console.log('Error:', error);
+                console.log('Error:', error)
             }
         }
     </script>

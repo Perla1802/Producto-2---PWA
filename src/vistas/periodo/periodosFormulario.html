@@ -4,13 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar aula</title>
+    <title>Agregar periodo</title>
 
     <!-- Hoja de estilos -->
     <link rel="stylesheet" href="/src/styles/registrar.css">
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- calendario -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -23,7 +28,7 @@
             <header>
                 <div class="container__header">
                     <div class="menu">
-                        <a href="/src/vistas/Registros/aula/aulas.html" class="btn__quote">Regresar</a>
+                        <a href="/src/vistas/periodo/periodos.html" class="btn__quote">Regresar</a>
                     </div>
                 </div>
             </header>
@@ -35,7 +40,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Inserción Correcta</h5>
+
                     </div>
+
                     <div class="modal-body">
                         <h5 class="h5"> Éxito </h5>
                     </div>
@@ -48,7 +55,7 @@
 
         <header class="cont">
             <!-- Datos -->
-            <h3 class="subtitle">Aula:</h3>
+            <h3 class="subtitle">Periodo:</h3>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="mb-3">
@@ -57,22 +64,34 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripcion</label>
-                        <input type="text" class="form-control" id="descripcion">
+                        <label for="fechaI" class="form-label">Fecha inicial</label>
+                        <input type="text" class="form-control" id="fechaI">
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="mb-3">
-                        <label for="idEdificio" class="form-label">Id Edificio</label>
-                        <input type="text" class="form-control" id="idEdificio">
+                        <label for="fechaF" class="form-label">Fecha final</label>
+                        <input type="text" class="form-control" id="fechaF">
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="mb-3">
+                        <label for="anio" class="form-label">Año</label>
+                        <input type="number" class="form-control" id="anio">
+                    </div>
+                </div>
+            </div>
+
 
             <!-- Botones Finales -->
             <div class="row">
@@ -89,35 +108,43 @@
     <script>
         function cerrarModal() {
             $("#modal").modal('hide')
+
         }
 
         function regresar() {
-            window.location.href = '/src/vistas/Registros/aula/aulas.html'
+            window.location.href = '/src/vistas/grupo/grupos.html'
         }
+
+        $(document).ready(function () {
+            $(function () {
+                $("#fechaI, #fechaF").datepicker();
+            });
+        })
 
         async function guardar() {
             try {
-                const nom = $('#nombre').val();
-                const des = $('#descripcion').val();
-                const idE= $('#idEdificio').val();
+                const nombreP = $('#nombre').val();
+                const fechaI = $('#fechaI').val();
+                const fechaF = $('#fechaF').val();
+                const anioP = $('#anio').val();
                 const errorDiv = $('#error');
-
-                if (nombre && descripcion) {
+                console.log(nombreP,fechaI,fechaF,anioP)
+                if (nombre  && fechaI && fechaF && anioP) {
                     $.ajax({
-                        url: 'http://localhost:3000/aulas/create',
+                        url: 'http://localhost:3000/periodo/create',
                         type: 'POST',
                         contentType: 'application/json',
-                        data: JSON.stringify({ nombre: nom, descripcion: des, idEdificio: idE }),
+                        data: JSON.stringify({ nombre: nombreP, fechaInicio: fechaI, fechaFin: fechaF, anio: anioP }),
                         success: function (data) {
-                            console.log('Inserción de division correcta.', data);
                             $('#nombre').val('');
-                            $('#descripcion').val('');
-                            $('#idEdificio').val('');
+                            $('#fechaI').val('');
+                            $('#fechaF').val('');
+                            $('#anio').val('');
                             $("#modal").modal('toggle');
                         },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            errorDiv.html("Error intente mas tarde.");
-                            console.error('Error en la solicitud:', textStatus, errorThrown);
+                        error: function (error) {
+                            errorDiv.html("Error intente más tarde.");
+                            console.error('Error en la solicitud:', error);
                         }
                     });
                 } else {

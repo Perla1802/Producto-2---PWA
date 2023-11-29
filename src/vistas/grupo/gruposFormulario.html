@@ -23,7 +23,7 @@
             <header>
                 <div class="container__header">
                     <div class="menu">
-                        <a href="/src/vistas/Registros/grupo/grupos.html" class="btn__quote">Regresar</a>
+                        <a href="/src/vistas/grupo/grupos.html" class="btn__quote">Regresar</a>
                     </div>
                 </div>
             </header>
@@ -34,10 +34,10 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel" >Inserción Correcta</h5>
-                        
+                        <h5 class="modal-title" id="exampleModalLabel">Inserción Correcta</h5>
+
                     </div>
-                    
+
                     <div class="modal-body">
                         <h5 class="h5"> Éxito </h5>
                     </div>
@@ -64,7 +64,7 @@
                 <div class="col-lg-12">
                     <div class="mb-3">
                         <label for="cuatrimestre" class="form-label">Cuatrimestre</label>
-                        <input type="text" class="form-control" id="cuatrimestre">
+                        <input type="number" class="form-control" id="cuatrimestre" min="1" max="11">
                     </div>
                 </div>
             </div>
@@ -73,7 +73,10 @@
                 <div class="col-lg-12">
                     <div class="mb-3">
                         <label for="turno" class="form-label">Turno</label>
-                        <input type="text" class="form-control" id="turno">
+                        <select class="form-control" id="turno">
+                            <option value="Matutino">Matutino</option>
+                            <option value="Vespertino">Vespertino</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -81,8 +84,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="mb-3">
-                        <label for="idPeriodo" class="form-label">Id Periodo</label>
-                        <input type="text" class="form-control" id="idPeriodo">
+                        <label for="idPeriodo" class="form-label">Periodo</label>
+                        <div class="dropdown">
+                            <select class="form-control" id="idPeriodo"></select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,12 +95,24 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="mb-3">
-                        <label for="idEspecialidad" class="form-label">Id Especialidad</label>
-                        <input type="text" class="form-control" id="idEspecialidad">
+                        <label for="idAula" class="form-label">Aula</label>
+                        <div class="dropdown">
+                            <select class="form-control" id="idAula"></select>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="mb-3">
+                        <label for="idEspecialidad" class="form-label">Especialidad</label>
+                        <div class="dropdown">
+                            <select class="form-control" id="idEspecialidad"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Botones Finales -->
             <div class="row">
@@ -112,12 +129,91 @@
     <script>
         function cerrarModal() {
             $("#modal").modal('hide')
-            
+
         }
 
         function regresar() {
-            window.location.href = '/src/vistas/Registros/grupo/grupos.html'
+            window.location.href = '/src/vistas/grupo/grupos.html'
         }
+
+        async function cargarPeriodos() {
+            try {
+                $.ajax({
+                    url: 'http://localhost:3000/periodo/get',
+                    type: 'GET',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        const dropdown = $('#idPeriodo');
+                        dropdown.empty(); // Limpiar opciones existentes
+                        data.content.forEach((periodo) => {
+                            dropdown.append($('<option></option>').attr('value', periodo.IDperiodo).text(periodo.NombrePeriodo));
+                        });
+                    },
+                    error: function (error) {
+                        errorDiv.html("Error intente más tarde.");
+                        console.error('Error en la solicitud:', error);
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error al cargar periodos:', error);
+            }
+        }
+
+
+        async function cargarAulas() {
+            try {
+                $.ajax({
+                    url: 'http://localhost:3000/aulas/get',
+                    type: 'GET',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        const dropdown = $('#idAula');
+                        dropdown.empty(); // Limpiar opciones existentes
+                        data.content.forEach((aula) => {
+                            dropdown.append($('<option></option>').attr('value', aula.IDaula).text(aula.NombreAula));
+                        });
+                    },
+                    error: function (error) {
+                        errorDiv.html("Error intente más tarde.");
+                        console.error('Error en la solicitud:', error);
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error al cargar aulas:', error);
+            }
+        }
+
+        async function cargarEspecialidades() {
+            try {
+                $.ajax({
+                    url: 'http://localhost:3000/especialidades/get',
+                    type: 'GET',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        const dropdown = $('#idEspecialidad');
+                        dropdown.empty(); // Limpiar opciones existentes
+                        data.content.forEach((especialidad) => {
+                            dropdown.append($('<option></option>').attr('value', especialidad.IDespecialidad).text(especialidad.NombresEspecialidad));
+                        });
+                    },
+                    error: function (error) {
+                        errorDiv.html("Error intente más tarde.");
+                        console.error('Error en la solicitud:', error);
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error al cargar aulas:', error);
+            }
+        }
+
+        $(document).ready(function () {
+            cargarPeriodos();
+            cargarAulas();
+            cargarEspecialidades();
+        })
 
         async function guardar() {
             try {
@@ -133,7 +229,7 @@
                         url: 'http://localhost:3000/grupo/create',
                         type: 'POST',
                         contentType: 'application/json',
-                        data: JSON.stringify({ nombre: nombreG, cuatrimestre: cuatrimestreG, turno: turnoG, idPeriodo: idPeriodoG, idEspecialidad: idEspecialidadG}),
+                        data: JSON.stringify({ nombre: nombreG, cuatrimestre: cuatrimestreG, turno: turnoG, idPeriodo: idPeriodoG, idEspecialidad: idEspecialidadG }),
                         success: function (data) {
                             $('#nombre').val('');
                             $('#cuatrimestre').val('');

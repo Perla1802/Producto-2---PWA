@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Especialidades</title>
+    <title>Aulas</title>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -33,24 +33,23 @@
 <body>
 
     <!--Header - Menu-->
-
     <header>
         <div class="container__header">
             <div class="logo">
                 <a href="#">
-                    <img src="assets/images/" alt="">
+                    <img src="" alt="">
                 </a>
             </div>
 
             <div class="menu">
                 <nav>
                     <ul>
-                        <li><a href="/src/vistas/Registros/division/divisionesdatatable.html">Divisiones</a></li>
-                        <li><a href="/src/vistas/Registros/especialidad/especialidades.html">Especialidades</a></li>
-                        <li><a href="/src/vistas/Registros/edificio/edificios.html">Edificios</a></li>
-                        <li><a href="/src/vistas/Registros/aula/aulas.html">Aulas</a></li>
-                        <li><a href="/src/vistas/Registros/periodo/periodos.html">Periodos</a></li>
-                        <li><a href="/src/vistas/Registros/grupo/grupos.html">Grupos</a></li>
+                        <li><a href="/src/vistas/division/division.html">Divisiones</a></li>
+                        <li><a href="/src/vistas/especialidad/especialidades.html">Especialidades</a></li>
+                        <li><a href="/src/vistas/edificio/edificios.html">Edificios</a></li>
+                        <li><a href="/src/vistas/aula/aulas.html"><strong>Aulas</strong></a></li>
+                        <li><a href="/src/vistas/periodo/periodos.html">Periodos</a></li>
+                        <li><a href="/src/vistas/grupo/grupos.html">Grupos</a></li>
                     </ul>
                 </nav>
 
@@ -66,23 +65,46 @@
             <!-- Contenido principal -->
             <main role="main" class="col-md-9 ml-sm-auto col-lg-12" style="margin-top: 20px;">
                 <div class="mb-3 border-bottom">
-                    <h1 id="title" style="font-size: 40px;">Especialidades</h1>
+                    <h1 id="title" style="font-size: 40px;">Aulas</h1>
                 </div>
 
-                <a href="/src/vistas/Registros/especialidad/especialidad.html" class="btn"
+                <a href="/src/vistas/aula/aulasFormulario.html" class="btn"
                     style="border-color: #134e4a; background-color:#134e4a; color: white; margin-bottom: 30px;">Agregar
                 </a>
 
-                <!-- Modal -->
+                <!-- Modal Error-->
+                <div class="modal fade" id="modalError" role="edit" aria-labelledby="Error" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Error de eliminación</h5>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Campos de entrada para folio y dirección -->
+                                <div class="mb-3">
+                                    <label id="error" class="form-label"></label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="cerrar" type="button" class="btn btn-primary" style="background-color: #0d6efd;"
+                                    onclick="cerrarModal()">
+                                    <i class="fa fa-times" aria-hidden="true"></i> Aceptar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Editar-->
                 <div class="modal fade" id="modal" role="edit" aria-labelledby="Editar" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Editar Registro</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Editar Registros</h5>
                             </div>
                             <div class="modal-body">
                                 <!-- Campos de entrada para folio y dirección -->
-                                <input type="text" id="ids">
+                                <input type="text" id="ids" hidden>
                                 <div class="mb-3">
                                     <label for="nombreInput" class="form-label">Nombre:</label>
                                     <input type="text" id="nombreInput" placeholder="Nombre" class="form-control">
@@ -95,18 +117,18 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="idDivision" class="form-label">IDdivision:</label>
-                                    <input type="text" id="idDivision" placeholder="idDivision"
+                                    <label for="idEdificio" class="form-label">Id Edificio:</label>
+                                    <input type="text" id="idEdificio" placeholder="idEdificio"
                                         class="form-control">
                                 </div>
 
                             </div>
                             <div class="modal-footer">
-                                <button id="cerrar" type="button" class="btn btn-danger" style="background-color: red;"
+                                <button id="cerrar" type="button" class="btn btn-danger" style="background-color: #dc3545;"
                                     onclick="cerrarModal()">
                                     <i class="fa fa-times" aria-hidden="true"></i> Cancelar
                                 </button>
-                                <button type="button" class="btn btn-primary" style="background-color: blue;"
+                                <button type="button" class="btn btn-primary" style="background-color: #0d6efd;"
                                     onclick="guardarCambios($('#ids').val())">Guardar Cambios</button>
                             </div>
                         </div>
@@ -120,9 +142,8 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Nombre</th>
-                                <th>Descripción </th>
-                                <th>Division ID</th>
-                                <th>Nombre division</th>
+                                <th>Descripción</th>
+                                <th>Edificio</th>
                                 <th class="align-items-center justify-content-center">Acciones</th>
                             </tr>
                         </thead>
@@ -163,25 +184,24 @@
                     }
                 },
                 ajax: {
-                    url: 'http://localhost:3000/especialidades/get',
+                    url: 'http://localhost:3000/aulas/get',
                     dataSrc: 'content'
                 },
                 columns: [
-                    { data: 'IDespecialidad' },
-                    { data: 'NombresEspecialidad' },
-                    { data: 'DescripcionEsp' },
-                    { data: 'DivisionID' },
-                    { data: 'NombreDivision' },
+                    { data: 'IDaula' },
+                    { data: 'NombreAula' },
+                    { data: 'DescripcionAula' },
+                    { data: 'NombreEdificio' },
                     {
                         data: null,
                         render: function (data, type, row) {
-                            const IDespecialidad = row.IDespecialidad;
-                            const NombreEspecialidad = row.NombresEspecialidad;
-                            const DescripcionEsp = row.DescripcionEsp;
-                            const DivisionID = row.DivisionID;
+                            const IDaula = row.IDaula;
+                            const NombreAula = row.NombreAula;
+                            const DescripcionAula = row.DescripcionAula;
+                            const EdificioID = row.EdificioID;
                             // Botones de Acciones
-                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDespecialidad},'${NombreEspecialidad}','${DescripcionEsp}',${DivisionID})">Editar</button> 
-                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDespecialidad})">Eliminar</button>`;
+                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDaula},'${NombreAula}','${DescripcionAula}',${EdificioID})">Editar</button> 
+                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDaula})">Eliminar</button>`;
                         }
                     }
                 ]
@@ -195,54 +215,61 @@
 
         function cerrarModal() {
             $("#modal").modal('hide')
-            window.location.href = './especialidades.html'
+            $("#modalError").modal('hide')
         }
 
-        //No se ha modificado esta parte
-        function editarRegistro(IDespecialidad, NombreEspecialidad, DescripcionEsp, IDdivision) {
-
+        
+        function editarRegistro(IDaula, NombreAula, DescripcionAula, EdificioID) {
             //pasando los valores al modal
-            $('#nombreInput').val(NombreEspecialidad);
-            $('#descripcionInput').val(DescripcionEsp);
-            $('#ids').val(IDespecialidad);
-            $('#idDivision').val(IDdivision);
+            $('#nombreInput').val(NombreAula);
+            $('#descripcionInput').val(DescripcionAula);
+            $('#ids').val(IDaula);
+            $('#idEdificio').val(EdificioID);
 
             $('#modal').modal('toggle');
         }
 
-        function guardarCambios(IDespecialidad) {
+        function guardarCambios(IDaula) {
             //valores nuevos
             const nom = $('#nombreInput').val();
             const des = $('#descripcionInput').val();
-            const idDivision = $('#idDivision').val();
+            const idE = $('#idEdificio').val();
 
             $.ajax({
                 method: "PUT",
-                url: `http://localhost:3000/especialidades/update/${IDespecialidad}`,
-                data: { nombre: nom, descripcion: des, idDivision: idDivision}, //mandas los valores nuevos
+                url: `http://localhost:3000/aulas/update/${IDaula}`,
+                data: { nombre: nom, descripcion: des, idEdificio: idE}, //mandas los valores nuevos
                 success: function (response) {
                     console.log("Registro actualizado con éxito", response);
+                    window.location.href = './aulas.html'
                 },
                 error: function (error) {
-                    console.error("Error al actualizar el registro", error);
+                    console.error(error.responseText);
+                    $('#error').text('Error, intente más tarde');
+                    $('#modalError').modal('toggle');
                 }
             });
             cerrarModal();
         }
 
-        function eliminarRegistro(IDespecialidad) {
+        function eliminarRegistro(IDaula) {
             $.ajax({
                 method: "DELETE",
-                url: `http://localhost:3000/especialidades/delete/${IDespecialidad}`,
+                url: `http://localhost:3000/aulas/delete/${IDaula}`,
                 success: function (response) {
-                    console.log("Registro eliminado", response); 
-                    window.location.href = './especialidades.html' 
+                    console.log("Registro eliminado con éxito.", response);
+                    window.location.href = './aulas.html'    
                 },
                 error: function (error) {
-                    console.error("Error al actualizar el registro", error);
+                    console.log(error.responseText)
+                    if(error.responseJSON.error.code === 'EREQUEST') {
+                        $('#error').text('El dato que deseas eliminar tiene conflictos porque otros datos referencian su llave primaria.');
+                    } else {
+                        $('#error').text('Error, intente más tarde');
+                    } 
+                    $('#modalError').modal('toggle');
                 }
             });
-            window.location.href = './especialidades.html'
         }
     </script>
 

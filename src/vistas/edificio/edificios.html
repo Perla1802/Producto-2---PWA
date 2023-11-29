@@ -38,19 +38,19 @@
         <div class="container__header">
             <div class="logo">
                 <a href="#">
-                    <img src="assets/images/" alt="">
+                    <img src="" alt="">
                 </a>
             </div>
 
             <div class="menu">
                 <nav>
                     <ul>
-                        <li><a href="/src/vistas/Registros/division/divisionesdatatable.html">Divisiones</a></li>
-                        <li><a href="/src/vistas/Registros/especialidad/especialidades.html">Especialidades</a></li>
-                        <li><a href="/src/vistas/Registros/edificio/edificios.html">Edificios</a></li>
-                        <li><a href="/src/vistas/Registros/aula/aulas.html">Aulas</a></li>
-                        <li><a href="/src/vistas/Registros/periodo/periodos.html">Periodos</a></li>
-                        <li><a href="/src/vistas/Registros/grupo/grupos.html">Grupos</a></li>
+                        <li><a href="/src/vistas/division/division.html">Divisiones</a></li>
+                        <li><a href="/src/vistas/especialidad/especialidades.html">Especialidades</a></li>
+                        <li><a href="/src/vistas/edificio/edificios.html"><strong>Edificios</strong></a></li>
+                        <li><a href="/src/vistas/aula/aulas.html">Aulas</a></li>
+                        <li><a href="/src/vistas/periodo/periodos.html">Periodos</a></li>
+                        <li><a href="/src/vistas/grupo/grupos.html">Grupos</a></li>
                     </ul>
                 </nav>
 
@@ -69,10 +69,32 @@
                     <h1 id="title" style="font-size: 40px;">Edificios</h1>
                 </div>
 
-                <a href="/src/vistas/Registros/edificio/edificio.html" class="btn"
+                <a href="/src/vistas/edificio/edificiosFormulario.html" class="btn"
                     style="border-color: #134e4a; background-color:#134e4a; color: white; margin-bottom: 30px;">Agregar
                 </a>
 
+                <!-- Modal Error-->
+                <div class="modal fade" id="modalError" role="edit" aria-labelledby="Error" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Error de eliminación</h5>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Campos de entrada para folio y dirección -->
+                                <div class="mb-3">
+                                    <label id="error" class="form-label"></label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="cerrar" type="button" class="btn btn-primary" style="background-color: #0d6efd;"
+                                    onclick="cerrarModal()">
+                                    <i class="fa fa-times" aria-hidden="true"></i> Aceptar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Modal -->
                 <div class="modal fade" id="modal" role="edit" aria-labelledby="Editar" aria-hidden="true">
@@ -103,11 +125,11 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button id="cerrar" type="button" class="btn btn-danger" style="background-color: red;"
+                                <button id="cerrar" type="button" class="btn btn-danger" style="background-color: #dc3545;"
                                     onclick="cerrarModal()">
                                     <i class="fa fa-times" aria-hidden="true"></i> Cancelar
                                 </button>
-                                <button type="button" class="btn btn-primary" style="background-color: blue;"
+                                <button type="button" class="btn btn-primary" style="background-color: #0d6efd;"
                                     onclick="guardarCambios($('#ids').val())">Guardar Cambios</button>
                             </div>
                         </div>
@@ -122,8 +144,7 @@
                                 <th>Id</th>
                                 <th>Nombre edificio</th>
                                 <th>Descripción edificio</th>
-                                <th>Division ID</th>
-                                <th>Nombre division</th>
+                                <th>División</th>
                                 <th class="align-items-center justify-content-center">Acciones</th>
                             </tr>
                         </thead>
@@ -171,7 +192,6 @@
                     { data: 'IDedificio' },
                     { data: 'NombreEdificio' },
                     { data: 'DescripcionEdif' },
-                    { data: 'DivisionID' },
                     { data: 'NombreDivision' },
                     {
                         data: null,
@@ -196,7 +216,7 @@
 
         function cerrarModal() {
             $("#modal").modal('hide')
-            window.location.href = './edificios.html'
+            $("#modalError").modal('hide')
         }
 
         //No se ha modificado esta parte
@@ -224,12 +244,13 @@
                 data: { nombre: nom, descripcion: des, idDivision: idDivision}, //mandas los valores nuevos
                 success: function (response) {
                     console.log("Registro actualizado con éxito", response);
+                    window.location.href = './edificios.html'
                 },
                 error: function (error) {
-                    console.error("Error al actualizar el registro", error);
+                    $('#error').text('Error, intente más tarde');
+                    $('#modalError').modal('toggle');
                 }
             });
-            cerrarModal();
         }
 
         function eliminarRegistro(IDedificio) {
@@ -237,14 +258,18 @@
                 method: "DELETE",
                 url: `http://localhost:3000/edificio/delete/${IDedificio}`,
                 success: function (response) {
-                    console.log("Registro eliminado", response);
+                    console.log("Registro eliminado con éxito.", response);
                     window.location.href = './edificios.html'    
                 },
                 error: function (error) {
-                    console.error("Error al actualizar el registro", error);
+                    if(error.responseJSON.error.code === 'EREQUEST') {
+                        $('#error').text('El dato que deseas eliminar tiene conflictos porque otros datos referencian su llave primaria.');
+                    } else {
+                        $('#error').text('Error, intente más tarde');
+                    } 
+                    $('#modalError').modal('toggle');
                 }
             });
-            window.location.href = './edificios.html' 
         }
     </script>
 

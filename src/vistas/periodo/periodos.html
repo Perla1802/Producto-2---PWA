@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Divisiones</title>
+    <title>Periodos</title>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -26,30 +26,34 @@
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+
+
 </head>
 
 <body>
 
     <!--Header - Menu-->
+
     <header>
         <div class="container__header">
             <div class="logo">
                 <a href="#">
-                    <img src="assets/images/" alt="">
+                    <img src="" alt="">
                 </a>
             </div>
 
             <div class="menu">
                 <nav>
                     <ul>
-                        <li><a href="/src/vistas/Registros/division/divisionesdatatable.html">Divisiones</a></li>
-                        <li><a href="/src/vistas/Registros/especialidad/especialidades.html">Especialidades</a></li>
-                        <li><a href="/src/vistas/Registros/edificio/edificios.html">Edificios</a></li>
-                        <li><a href="/src/vistas/Registros/aula/aulas.html">Aulas</a></li>
-                        <li><a href="/src/vistas/Registros/periodo/periodos.html">Periodos</a></li>
-                        <li><a href="/src/vistas/Registros/grupo/grupos.html">Grupos</a></li>
+                        <li><a href="/src/vistas/division/division.html">Divisiones</a></li>
+                        <li><a href="/src/vistas/especialidad/especialidades.html">Especialidades</a></li>
+                        <li><a href="/src/vistas/edificio/edificios.html">Edificios</a></li>
+                        <li><a href="/src/vistas/aula/aulas.html">Aulas</a></li>
+                        <li><a href="/src/vistas/periodo/periodos.html"><strong>Periodos</strong></a></li>
+                        <li><a href="/src/vistas/grupo/grupos.html">Grupos</a></li>
                     </ul>
                 </nav>
+
                 <a href="/src/index.html" class="btn__quote">Salir</a>
             </div>
         </div>
@@ -57,14 +61,15 @@
 
     <!--INICIO-->
     <div class="container-fluid">
+
         <div class="row">
             <!-- Contenido principal -->
             <main role="main" class="col-md-9 ml-sm-auto col-lg-12" style="margin-top: 20px;">
                 <div class="mb-3 border-bottom">
-                    <h1 id="title" style="font-size: 40px;">División</h1>
+                    <h1 id="title" style="font-size: 40px;">Periodos</h1>
                 </div>
 
-                <a href="/src/vistas/Registros/division/division.html" class="btn"
+                <a href="/src/vistas/periodo/periodosFormulario.html" class="btn"
                     style="border-color: #134e4a; background-color:#134e4a; color: white; margin-bottom: 30px;">Agregar
                 </a>
 
@@ -83,11 +88,22 @@
                                     <label for="nombreInput" class="form-label">Nombre:</label>
                                     <input type="text" id="nombreInput" placeholder="Nombre" class="form-control">
                                 </div>
+
                                 <div class="mb-3">
-                                    <label for="descripcionInput" class="form-label">Descripción:</label>
-                                    <input type="text" id="descripcionInput" placeholder="Descripcion"
-                                        class="form-control">
+                                    <label for="fechaInicio" class="form-label">Fecha inicial:</label>
+                                    <input type="text" id="fechaInicio" placeholder="FechaInicio" class="form-control">
                                 </div>
+
+                                <div class="mb-3">
+                                    <label for="fechaFin" class="form-label">Fecha final:</label>
+                                    <input type="text" id="fechaFin" placeholder="fechaFin" class="form-control">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="anio" class="form-label">Año:</label>
+                                    <input type="text" id="anio" placeholder="anio" class="form-control">
+                                </div>
+
                             </div>
                             <div class="modal-footer">
                                 <button id="cerrar" type="button" class="btn btn-danger" style="background-color: red;"
@@ -108,7 +124,9 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Nombre</th>
-                                <th>Descripción</th>
+                                <th>Fecha Inicial</th>
+                                <th>Fecha Final</th>
+                                <th>Año</th>
                                 <th class="align-items-center justify-content-center">Acciones</th>
                             </tr>
                         </thead>
@@ -149,22 +167,38 @@
                     }
                 },
                 ajax: {
-                    url: 'http://localhost:3000/division/get',
+                    url: 'http://localhost:3000/periodo/get',
                     dataSrc: 'content'
                 },
                 columns: [
-                    { data: 'IDdivision' },
-                    { data: 'NombreDivision' },
-                    { data: 'DescripcionDiv' },
+                    { data: 'IDperiodo' },
+                    { data: 'NombrePeriodo' },
+                    {
+                        data: 'P_inicio',
+                        render: function (data) {
+                            // Formatear la fecha de inicio
+                            return new Date(data).toLocaleDateString('es-ES');
+                        }
+                    },
+                    {
+                        data: 'P_Fin',
+                        render: function (data) {
+                            // Formatear la fecha de fin
+                            return new Date(data).toLocaleDateString('es-ES');
+                        }
+                    },
+                    { data: 'Año' },
                     {
                         data: null,
                         render: function (data, type, row) {
-                            const IDdivision = row.IDdivision;
-                            const NombreDivision = row.NombreDivision;
-                            const DescripcionDiv = row.DescripcionDiv;
+                            const IDperiodo = row.IDperiodo;
+                            const NombrePeriodo = row.NombrePeriodo;
+                            const FechaInicio = row.P_inicio;
+                            const FechaFin = row.P_Fin;
+                            const Anio = row.Año;
                             // Botones de Acciones
-                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDdivision},'${NombreDivision}','${DescripcionDiv}')">Editar</button>
-                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDdivision})">Eliminar</button>`;
+                            return `<button class="btn btn-warning btn-sm" onclick="editarRegistro(${IDperiodo},'${NombrePeriodo}','${FechaInicio}','${FechaFin}',${Anio})">Editar</button> 
+                            <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${IDperiodo})">Eliminar</button>`;
                         }
                     }
                 ]
@@ -178,26 +212,32 @@
 
         function cerrarModal() {
             $("#modal").modal('hide')
-            window.location.href = './divisionesdatatable.html'
+            //window.location.href = '/src/vistas/periodos.html'
         }
 
-        function editarRegistro(IDdivision, NombreDivision, DescripcionDiv) {
+        //No se ha modificado esta parte
+        function editarRegistro(IDperiodo, NombrePeriodo, FechaInicio, FechaFin, Anio) {
             //pasando los valores al modal
-            $('#nombreInput').val(NombreDivision);
-            $('#descripcionInput').val(DescripcionDiv);
-            $('#ids').val(IDdivision);
+            $('#nombreInput').val(NombrePeriodo);
+            $('#fechaInicio').val(FechaInicio);
+            $('#fechaFin').val(FechaFin);
+            $('#anio').val(Anio);
+            $('#ids').val(IDperiodo);
 
             $('#modal').modal('toggle');
         }
 
-        function guardarCambios(IDdivision) {
+        function guardarCambios(IDperiodo) {
+            //valores nuevos
             const nom = $('#nombreInput').val();
-            const des = $('#descripcionInput').val();
+            const fechaI = $('#fechaInicio').val();
+            const fechaF = $('#fechaFin').val();
+            const anios = $('#anio').val();
 
             $.ajax({
                 method: "PUT",
-                url: `http://localhost:3000/division/update/${IDdivision}`,
-                data: { nombre: nom, descripcion: des },
+                url: `http://localhost:3000/periodo/update/${IDperiodo}`,
+                data: { nombre: nom, fechaInicio: fechaI, fechaFin: fechaF, anio: anios }, //mandas los valores nuevos
                 success: function (response) {
                     console.log("Registro actualizado con éxito", response);
                 },
@@ -208,19 +248,18 @@
             cerrarModal();
         }
 
-        function eliminarRegistro(IDdivision) {
+        function eliminarRegistro(IDperiodo) {
             $.ajax({
                 method: "DELETE",
-                url: `http://localhost:3000/division/delete/${IDdivision}`,
+                url: `http://localhost:3000/aulas/delete/${IDperiodo}`,
                 success: function (response) {
                     console.log("Registro eliminado", response);
-                    window.location.href = './divisionesdatatable.html'
+                    window.location.href = '/src/vistas/periodo/periodos.html'
                 },
                 error: function (error) {
                     console.error("Error al actualizar el registro", error);
                 }
             });
-            window.location.href = './divisionesdatatable.html'
         }
     </script>
 
