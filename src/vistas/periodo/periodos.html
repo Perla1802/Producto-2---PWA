@@ -106,11 +106,11 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button id="cerrar" type="button" class="btn btn-danger" style="background-color: red;"
+                                <button id="cerrar" type="button" class="btn btn-danger" style="background-color: #dc3545;"
                                     onclick="cerrarModal()">
                                     <i class="fa fa-times" aria-hidden="true"></i> Cancelar
                                 </button>
-                                <button type="button" class="btn btn-primary" style="background-color: blue;"
+                                <button type="button" class="btn btn-primary" style="background-color: #0d6efd;"
                                     onclick="guardarCambios($('#ids').val())">Guardar Cambios</button>
                             </div>
                         </div>
@@ -251,10 +251,10 @@
         function eliminarRegistro(IDperiodo) {
             $.ajax({
                 method: "DELETE",
-                url: `http://localhost:3000/aulas/delete/${IDperiodo}`,
+                url: `http://localhost:3000/periodo/delete/${IDperiodo}`,
                 success: function (response) {
                     console.log("Registro eliminado", response);
-                    window.location.href = '/src/vistas/periodo/periodos.html'
+                    window.location.href = './periodos.html'
                 },
                 error: function (error) {
                     console.error("Error al actualizar el registro", error);
